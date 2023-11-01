@@ -1,0 +1,37 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  Build-and-Release:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+     
+      - name: Build Release Artifacts
+        run: |          
+          # Create a source archive that will have a stable hash. The one that GitHub automatically produces will not 
+          # be able to guarantee a stable hash, see: https://blog.bazel.build/2023/02/15/github-archive-checksum.html.
+          git archive -o example-claro-module-source-archive-v1.0.0.zip HEAD
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1 
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Adding 240 to compensate for renaming this workflow causing the run_number to reset.
+          tag_name: v1.0.0
+          name: v1.0.0 Automated Release
+          body: |
+            # You can depend on this module in your Claro project by placing the following dep in your MODULE.bazel:
+            bazel_dep(name = "example-claro-module", version = "1.0.0")
+          draft: false
+          prerelease: false
+          fail_on_unmatched_files: true
+          files: |
+            example-claro-module-source-archive-v1.0.0.zip

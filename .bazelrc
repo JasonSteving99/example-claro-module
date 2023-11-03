@@ -1,1 +1,2 @@
-common --registry=https://raw.githubusercontent.com/JasonSteving99/bazel-central-registry/4c2a7991e4c1e4ee23cd5650a94aa453076bcc3d/
+common --registry=https://raw.githubusercontent.com/JasonSteving99/bazel-central-registry/ecd004aa44f40a662d8458480969663028d54c22/
+common --enable_bzlmod
